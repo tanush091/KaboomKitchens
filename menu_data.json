@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "Fiery Kaboom Wings",
+        "category": "Starters",
+        "price": "$8.99",
+        "description": "Crispy wings tossed in spicy pepper sauce."
+    },
+    {
+        "id": 2,
+        "name": "Paneer Sizzler Platter",
+        "category": "Main Course",
+        "price": "$13.99",
+        "description": "Sizzling cottage cheese with vegetables."
+    },
+    {
+        "id": 3,
+        "name": "Volcano Choco Brownie",
+        "category": "Dessert",
+        "price": "$5.99",
+        "description": "Warm chocolate brownie with vanilla ice cream."
+    },
+    {
+        "id": 4,
+        "name": "Mango Citrus Cooler",
+        "category": "Beverage",
+        "price": "$4.25",
+        "description": "Chilled beverage with mango pulp and mint."
+    }
+]

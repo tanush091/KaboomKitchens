@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaboom's Kitchen - Home</title>
+
+    <!-- 1. External CSS: Linked from style.css -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- 2. Internal CSS: Page-specific styling -->
+    <style>
+        /* Internal CSS demonstration */
+        .promo-badge {
+            background-color: #FFE0B2;
+            color: #D84315;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .feature h3 {
+            margin: 0 0 4px;
+            color: #D84315;
+        }
+
+        .feature p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Header: brand + navigation (same on every page) -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">K</span>
+                <span>Kaboom's Kitchen<small>Flavors that burst with joy!</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html" class="active-link">Home</a></li>
+                    <li><a href="menu.html">Menu &amp; Booking</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li>
+                        <!-- Labs dropdown: <details> opens and closes without JavaScript -->
+                        <details class="nav-labs">
+                            <summary>Labs</summary>
+                            <ul>
+                                <li><a href="menu.xml"><span>W6</span>Menu XML + DTD</a></li>
+                                <li><a href="fetch_text.html"><span>W8</span>Fetch Text</a></li>
+                                <li><a href="fetch_data.html"><span>W9</span>Fetch JSON &amp; XML</a></li>
+                                <li><a href="booking_post.html"><span>W10</span>POST Booking</a></li>
+                                <li><a href="menu_ts_demo.html"><span>W11</span>TypeScript Demo</a></li>
+                                <li><a href="angular_app.html"><span>W12–14</span>Angular SPA</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section: welcome message and call-to-action buttons -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="promo-badge">Welcome Foodies!</div>
+            <h1>Welcome to Kaboom's Kitchen</h1>
+            <p class="lead">Experience the finest culinary delights crafted with fresh ingredients and authentic spices. Whether you are craving a sizzling platter, crispy bites, or sweet desserts, we have it all!</p>
+            <div class="hero-actions">
+                <a href="menu.html" class="btn-submit">View Our Menu</a>
+                <a href="menu.html#bookingSection" class="btn-reset">Book a Table</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <main class="container">
+
+        <!-- Why visit: three feature cards -->
+        <section class="section grid">
+            <div class="card feature">
+                <h3>Fresh Every Day</h3>
+                <p>Local produce and artisanal spices, prepared to order.</p>
+            </div>
+            <div class="card feature">
+                <h3>Open 7 Days</h3>
+                <p>Mon–Fri 11:00 AM – 10:30 PM, weekends until 11:30 PM.</p>
+            </div>
+            <div class="card feature">
+                <h3>Book Online</h3>
+                <p>Register once, then reserve a table in under a minute.</p>
+            </div>
+        </section>
+
+        <!-- Restaurant Highlights (External CSS applied via class .content-box) -->
+        <section class="section">
+            <h2>Our Highlights</h2>
+            <p class="section-intro">Three dishes our regulars order again and again.</p>
+            <div class="table-wrap">
+                <table class="content-box">
+                    <tr>
+                        <th>Specialty</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <!-- 3. Inline CSS demonstration: Highlighting chef special -->
+                        <td><b>Fiery Kaboom Wings</b> <span style="color: #D84315; font-size: 12px; font-weight: bold;">[Must Try]</span></td>
+                        <td>Crispy chicken wings tossed in our signature spicy tangy sauce.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Paneer Sizzler Platter</b></td>
+                        <td>Grilled cottage cheese served on a sizzling hot plate with sautéed vegetables.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Volcano Choco Brownie</b> <span style="color: #795548; font-size: 12px; font-weight: bold;">[Bestseller]</span></td>
+                        <td>Warm chocolate brownie topped with melting vanilla ice cream and hot fudge.</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- 14-Week Lab Syllabus Practical Modules Table -->
+        <section class="section" id="labs">
+            <h2>14-Week Web Technologies Lab Modules</h2>
+            <p class="section-intro">Every practical in the syllabus, with the file that demonstrates it.</p>
+            <div class="table-wrap">
+                <table class="content-box" id="labsTable">
+                    <tr>
+                        <th>Week</th>
+                        <th>Topic / Task Description</th>
+                        <th>File / Demonstration Link</th>
+                    </tr>
+                    <tr>
+                        <td><b>Week 1</b></td>
+                        <td>Home &amp; Login Pages Structure</td>
+                        <td><a href="index.html">index.html</a> · <a href="login.html">login.html</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>Week 2</b></td>
+                        <td>Customer Registration Form with HTML5 Validation</td>
+                        <td><a href="register.html">register.html</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>Week 3</b></td>
+                        <td>Inline, Internal, and External CSS Styling</td>
+                        <td><a href="style.css">style.css</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>Week 4</b></td>
+                        <td>Client-Side Registration Validation with JavaScript</td>
+                        <td><a href="register.html">register.html</a> (<a href="script.js">script.js</a>)</td>
+                    </tr>
+                    <tr>
+                        <td><b>Week 5</b></td>
+                        <td>Menu Display &amp; Table Reservation Form</td>
+                        <td><a href="menu.html">menu.html</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>Week 6</b></td>
+                        <td>XML Data Storage &amp; DTD Validation</td>
+                        <td><a href="menu.xml">menu.xml</a> (<a href="menu.dtd">menu.dtd</a>)</td>
+                    </tr>
+                    <tr>
+                        <td><b>Week 8</b></td>
+                        <td>Asynchronous Fetch API (Plain Text Loading)</td>
+                        <td><a href="fetch_text.html">fetch_text.html</a> (<a href="restaurant_info.txt">restaurant_info.txt</a>)</td>
+                    </tr>
+                    <tr>
+                        <td><b>Week 9</b></td>
+                        <td>Fetch API for JSON Reading &amp; XML DOM Parsing</td>
+                        <td><a href="fetch_data.html">fetch_data.html</a> (<a href="menu_data.json">menu_data.json</a>)</td>
+                    </tr>
+                    <tr>
+                        <td><b>Week 10</b></td>
+                        <td>HTTP POST Table Booking Form via Fetch API</td>
+                        <td><a href="booking_post.html">booking_post.html</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>Week 11</b></td>
+                        <td>TypeScript Classes, Interfaces &amp; Functions</td>
+                        <td><a href="menu_ts_demo.html">menu_ts_demo.html</a> (<a href="menu.ts">menu.ts</a>)</td>
+                    </tr>
+                    <tr>
+                        <td><b>Weeks 12-14</b></td>
+                        <td>Angular SPA: Components, Directives, Forms &amp; Service</td>
+                        <td><a href="angular_app.html">angular_app.html</a></td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Kaboom's Kitchen - College Web Technologies Lab Project</p>
+            <p><a href="index.html#labs">All lab modules</a></p>
+        </div>
+    </footer>
+</body>
+</html>

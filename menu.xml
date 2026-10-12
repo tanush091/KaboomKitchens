@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================================
+     Kaboom's Kitchen - menu.xml
+     WEEK 6: Food Items XML Document Validated by menu.dtd
+     ======================================================== -->
+<!DOCTYPE menu SYSTEM "menu.dtd">
+<menu>
+    <restaurant>Kaboom's Kitchen</restaurant>
+
+    <item id="item1">
+        <name>Fiery Kaboom Wings</name>
+        <category>Starters</category>
+        <price>$8.99</price>
+        <description>Crispy wings glazed in signature sweet and spicy pepper sauce.</description>
+    </item>
+
+    <item id="item2">
+        <name>Garlic Herb Bruschetta</name>
+        <category>Starters</category>
+        <price>$6.49</price>
+        <description>Toasted baguette slices topped with fresh tomatoes and olive oil.</description>
+    </item>
+
+    <item id="item3">
+        <name>Paneer Sizzler Platter</name>
+        <category>Main Course</category>
+        <price>$13.99</price>
+        <description>Grilled cottage cheese served with aromatic rice and vegetables.</description>
+    </item>
+
+    <item id="item4">
+        <name>Smoky BBQ Chicken Steak</name>
+        <category>Main Course</category>
+        <price>$15.49</price>
+        <description>Tender chicken breast served with mashed potatoes and pepper gravy.</description>
+    </item>
+
+    <item id="item5">
+        <name>Volcano Choco Brownie</name>
+        <category>Desserts</category>
+        <price>$5.99</price>
+        <description>Warm molten brownie served with a scoop of vanilla ice cream.</description>
+    </item>
+
+    <item id="item6">
+        <name>Mango Citrus Cooler</name>
+        <category>Beverages</category>
+        <price>$4.25</price>
+        <description>Chilled mocktail made with fresh mango pulp and mint leaves.</description>
+    </item>
+</menu>

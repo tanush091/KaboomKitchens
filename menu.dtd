@@ -1,0 +1,22 @@
+<!-- ========================================================
+     Kaboom's Kitchen - menu.dtd
+     WEEK 6: Document Type Definition (DTD) for menu.xml
+     ======================================================== -->
+
+<!-- The root element 'menu' contains a restaurant name and one or more 'item' elements -->
+<!ELEMENT menu (restaurant, item+)>
+
+<!-- Restaurant name text -->
+<!ELEMENT restaurant (#PCDATA)>
+
+<!-- Each item contains name, category, price, and description -->
+<!ELEMENT item (name, category, price, description)>
+
+<!-- Each item has a mandatory unique attribute 'id' -->
+<!ATTLIST item id ID #REQUIRED>
+
+<!-- Food item details containing parsed character data -->
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT price (#PCDATA)>
+<!ELEMENT description (#PCDATA)>

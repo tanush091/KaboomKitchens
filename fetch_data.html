@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaboom's Kitchen - Week 9 JSON & XML Fetch</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #jsonContainer,
+        #xmlContainer {
+            margin-top: 16px;
+            overflow-x: auto;
+        }
+        .placeholder {
+            color: #795548;
+            font-style: italic;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #FFFFFF;
+            border: 1px solid #F0D9CC;
+        }
+        .data-table th, .data-table td {
+            border-top: 1px solid #F0D9CC;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #D84315;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Header: brand + navigation (same on every page) -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">K</span>
+                <span>Kaboom's Kitchen<small>Flavors that burst with joy!</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu &amp; Booking</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li>
+                        <!-- Labs dropdown: <details> opens and closes without JavaScript -->
+                        <details class="nav-labs">
+                            <summary class="active-link">Labs</summary>
+                            <ul>
+                                <li><a href="menu.xml"><span>W6</span>Menu XML + DTD</a></li>
+                                <li><a href="fetch_text.html"><span>W8</span>Fetch Text</a></li>
+                                <li><a href="fetch_data.html" class="active-link"><span>W9</span>Fetch JSON &amp; XML</a></li>
+                                <li><a href="booking_post.html"><span>W10</span>POST Booking</a></li>
+                                <li><a href="menu_ts_demo.html"><span>W11</span>TypeScript Demo</a></li>
+                                <li><a href="angular_app.html"><span>W12–14</span>Angular SPA</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="badge">Week 9 · JSON &amp; XML</span>
+            <h1>Fetching and Parsing Data</h1>
+            <p class="lead">The same menu loaded two ways: as a JSON array and as an XML document parsed with <code>DOMParser</code>.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <!-- Section 1: Fetching and Parsing JSON -->
+        <div class="card">
+            <h2>Part A: Fetch &amp; Parse JSON <small>(menu_data.json)</small></h2>
+            <p>Uses <code>response.json()</code> to convert the JSON text directly into a JavaScript array of objects.</p>
+            <button onclick="fetchJsonData()" class="btn-submit">Load Menu from JSON</button>
+
+            <div id="jsonContainer">
+                <p class="placeholder">JSON items will appear here...</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Fetching and Parsing XML -->
+        <div class="card">
+            <h2>Part B: Fetch &amp; Parse XML <small>(menu.xml)</small></h2>
+            <p>Uses <code>response.text()</code> followed by <code>DOMParser().parseFromString()</code> to traverse XML elements.</p>
+            <button onclick="fetchXmlData()" class="btn-submit">Load Menu from XML</button>
+
+            <div id="xmlContainer">
+                <p class="placeholder">XML items will appear here...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Kaboom's Kitchen - College Web Technologies Lab Project</p>
+            <p><a href="index.html#labs">All lab modules</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // Part A: Fetching and Displaying JSON
+        // ==========================================
+        function fetchJsonData() {
+            var container = document.getElementById("jsonContainer");
+            container.innerHTML = "<p>Loading JSON data...</p>";
+
+            fetch("menu_data.json")
+                .then(function(response) {
+                    if (!response.ok) throw new Error("HTTP error " + response.status);
+                    return response.json(); // Parse response as JSON
+                })
+                .then(function(items) {
+                    var html = "<table class='data-table'>";
+                    html += "<tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Description</th></tr>";
+
+                    // Loop through array of JSON objects
+                    items.forEach(function(item) {
+                        html += "<tr>";
+                        html += "<td>" + item.id + "</td>";
+                        html += "<td><b>" + item.name + "</b></td>";
+                        html += "<td>" + item.category + "</td>";
+                        html += "<td style='color: #BF360C; font-weight: bold;'>" + item.price + "</td>";
+                        html += "<td>" + item.description + "</td>";
+                        html += "</tr>";
+                    });
+
+                    html += "</table>";
+                    container.innerHTML = html;
+                })
+                .catch(function(err) {
+                    container.innerHTML = "<span style='color: #C62828;'>Error fetching JSON: " + err.message + "</span>";
+                });
+        }
+
+        // ==========================================
+        // Part B: Fetching and Parsing XML with DOMParser
+        // ==========================================
+        function fetchXmlData() {
+            var container = document.getElementById("xmlContainer");
+            container.innerHTML = "<p>Loading XML data...</p>";
+
+            fetch("menu.xml")
+                .then(function(response) {
+                    if (!response.ok) throw new Error("HTTP error " + response.status);
+                    return response.text(); // Read XML as raw text string
+                })
+                .then(function(xmlString) {
+                    // 1. Create a DOMParser object
+                    var parser = new DOMParser();
+                    // 2. Parse text into an XML DOM document
+                    var xmlDoc = parser.parseFromString(xmlString, "text/xml");
+
+                    // 3. Extract items using getElementsByTagName
+                    var itemNodes = xmlDoc.getElementsByTagName("item");
+
+                    var html = "<table class='data-table'>";
+                    html += "<tr><th>XML ID</th><th>Name</th><th>Category</th><th>Price</th><th>Description</th></tr>";
+
+                    for (var i = 0; i < itemNodes.length; i++) {
+                        var id = itemNodes[i].getAttribute("id");
+                        var name = itemNodes[i].getElementsByTagName("name")[0].textContent;
+                        var category = itemNodes[i].getElementsByTagName("category")[0].textContent;
+                        var price = itemNodes[i].getElementsByTagName("price")[0].textContent;
+                        var desc = itemNodes[i].getElementsByTagName("description")[0].textContent;
+
+                        html += "<tr>";
+                        html += "<td>" + id + "</td>";
+                        html += "<td><b>" + name + "</b></td>";
+                        html += "<td>" + category + "</td>";
+                        html += "<td style='color: #BF360C; font-weight: bold;'>" + price + "</td>";
+                        html += "<td>" + desc + "</td>";
+                        html += "</tr>";
+                    }
+
+                    html += "</table>";
+                    container.innerHTML = html;
+                })
+                .catch(function(err) {
+                    container.innerHTML = "<span style='color: #C62828;'>Error fetching XML: " + err.message + "</span>";
+                });
+        }
+    </script>
+</body>
+</html>

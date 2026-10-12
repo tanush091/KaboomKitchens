@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="kaboomApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaboom's Kitchen - Weeks 12-14 Angular SPA</title>
+    <!-- Shared Project Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Angular 1.x CDN (standard in college web tech labs for single-file SPAs) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+        /* Tab bar: segmented buttons */
+        .spa-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .spa-nav button {
+            font: inherit;
+            font-weight: 600;
+            background-color: #FFFFFF;
+            color: #3E2723;
+            border: 1.5px solid #E0C3B4;
+            padding: 10px 18px;
+            cursor: pointer;
+            border-radius: 999px;
+        }
+        .spa-nav button:hover {
+            border-color: #D84315;
+            color: #D84315;
+        }
+        .spa-nav button.active-tab {
+            background-color: #D84315;
+            border-color: #D84315;
+            color: #FFFFFF;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .filters .field {
+            flex: 1 1 220px;
+            margin-bottom: 0;
+        }
+        .badge-cat {
+            background-color: #FFE0B2;
+            color: #BF360C;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .badge-ok {
+            background-color: #C8E6C9;
+            color: #2E7D32;
+        }
+        .field-error {
+            display: block;
+            color: #C62828;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        .service-box {
+            background-color: #FFF3E0;
+            border: 1px dashed #D84315;
+            padding: 12px 16px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        .app-card h2 {
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body ng-controller="RestaurantController">
+    <!-- Site Header: brand + navigation (same on every page) -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">K</span>
+                <span>Kaboom's Kitchen<small>Flavors that burst with joy!</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu &amp; Booking</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li>
+                        <!-- Labs dropdown: <details> opens and closes without JavaScript -->
+                        <details class="nav-labs">
+                            <summary class="active-link">Labs</summary>
+                            <ul>
+                                <li><a href="menu.xml"><span>W6</span>Menu XML + DTD</a></li>
+                                <li><a href="fetch_text.html"><span>W8</span>Fetch Text</a></li>
+                                <li><a href="fetch_data.html"><span>W9</span>Fetch JSON &amp; XML</a></li>
+                                <li><a href="booking_post.html"><span>W10</span>POST Booking</a></li>
+                                <li><a href="menu_ts_demo.html"><span>W11</span>TypeScript Demo</a></li>
+                                <li><a href="angular_app.html" class="active-link"><span>W12–14</span>Angular SPA</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="badge">Weeks 12–14 · Angular</span>
+            <h1>Angular Single-Page Application</h1>
+            <p class="lead">Components, directives (<code>ng-repeat</code>, <code>ng-if</code>, <code>ng-model</code>), forms and a booking service, all on one page that never reloads.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <!-- Week 13: Tab-based SPA Navigation / Routing -->
+        <div class="spa-nav">
+            <button ng-click="setTab('menu')" ng-class="{'active-tab': currentTab === 'menu'}">
+                1. Browse Menu
+            </button>
+            <button ng-click="setTab('book')" ng-class="{'active-tab': currentTab === 'book'}">
+                2. Book a Table
+            </button>
+            <button ng-click="setTab('reservations')" ng-class="{'active-tab': currentTab === 'reservations'}">
+                3. Confirmed Reservations ({{ bookings.length }})
+            </button>
+        </div>
+
+        <!-- ========================================================
+             WEEK 12 VIEW: Data Binding & Directives (Menu View)
+             ======================================================== -->
+        <div class="card app-card" ng-show="currentTab === 'menu'">
+            <h2>Menu <small>(Week 12: ng-repeat, ng-model, data binding)</small></h2>
+
+            <div class="filters">
+                <div class="field">
+                    <label for="categoryFilter">Filter by Category</label>
+                    <select id="categoryFilter" ng-model="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="Starters">Starters</option>
+                        <option value="Main Course">Main Course</option>
+                        <option value="Desserts">Desserts</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="searchQuery">Search by Name</label>
+                    <input type="text" id="searchQuery" ng-model="searchQuery" placeholder="Search dish...">
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="content-box">
+                    <tr>
+                        <th>Dish Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                    <!-- ng-repeat directive iterates over items array -->
+                    <tr ng-repeat="item in menuItems | filter:categoryFilter | filter:searchQuery">
+                        <td><b>{{ item.name }}</b></td>
+                        <td><span class="badge-cat">{{ item.category }}</span></td>
+                        <td style="color: #BF360C; font-weight: bold;">${{ item.price.toFixed(2) }}</td>
+                        <td>
+                            <button ng-click="quickReserve(item.name)" class="btn-submit" style="padding: 6px 14px; font-size: 13px;">
+                                Book Table
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             WEEK 13 VIEW: Angular Forms & Booking Service (Booking View)
+             ======================================================== -->
+        <div class="card app-card" ng-show="currentTab === 'book'">
+            <h2>Table Booking Form <small>(Week 13: Angular forms &amp; validation)</small></h2>
+            <p>Complete the form below. Two-way data binding updates the live reservation preview.</p>
+
+            <form name="bookingForm" ng-submit="submitBooking(bookingForm)" novalidate style="max-width: 560px;">
+                <!-- Customer Name -->
+                <div class="field">
+                    <label for="ngName">Customer Name</label>
+                    <input type="text" id="ngName" name="name" ng-model="formData.customerName" placeholder="Your name" required>
+                    <span class="field-error" ng-show="bookingForm.name.$dirty && bookingForm.name.$invalid">Name is required!</span>
+                </div>
+
+                <div class="field-row">
+                    <!-- Booking Date -->
+                    <div class="field">
+                        <label for="ngDate">Booking Date</label>
+                        <input type="date" id="ngDate" name="date" ng-model="formData.date" required>
+                        <span class="field-error" ng-show="bookingForm.date.$dirty && bookingForm.date.$invalid">Date is required!</span>
+                    </div>
+
+                    <!-- Booking Time -->
+                    <div class="field">
+                        <label for="ngTime">Booking Time</label>
+                        <input type="time" id="ngTime" name="time" ng-model="formData.time" required>
+                        <span class="field-error" ng-show="bookingForm.time.$dirty && bookingForm.time.$invalid">Time is required!</span>
+                    </div>
+                </div>
+
+                <!-- Number of Guests -->
+                <div class="field">
+                    <label for="ngGuests">Number of Guests</label>
+                    <input type="number" id="ngGuests" name="guests" ng-model="formData.guests" min="1" max="20" required>
+                    <span class="field-error" ng-show="bookingForm.guests.$dirty && bookingForm.guests.$invalid">Enter 1 to 20 guests!</span>
+                </div>
+
+                <!-- Form Buttons -->
+                <div class="form-actions">
+                    <input type="submit" value="Confirm Reservation" class="btn-submit" ng-disabled="bookingForm.$invalid">
+                    <button type="button" ng-click="resetForm()" class="btn-reset">Reset</button>
+                </div>
+            </form>
+
+            <!-- Two-way binding live preview box -->
+            <div class="service-box" ng-show="formData.customerName">
+                <b>Live Data Binding Preview (Two-Way Binding via ng-model):</b><br>
+                Reserving for <b>{{ formData.customerName }}</b> on <b>{{ formData.date | date:'yyyy-MM-dd' }}</b> at <b>{{ formData.time | date:'HH:mm' }}</b> with <b>{{ formData.guests }} guest(s)</b>.
+            </div>
+        </div>
+
+        <!-- ========================================================
+             WEEK 14 VIEW: Reservations List Managed by Booking Service
+             ======================================================== -->
+        <div class="card app-card" ng-show="currentTab === 'reservations'">
+            <h2>Confirmed Bookings <small>(Week 14: completed SPA integration)</small></h2>
+            <p>Records stored in memory via the Angular <b>BookingService</b> singleton.</p>
+
+            <div class="table-wrap" ng-if="bookings.length > 0">
+                <table class="content-box">
+                    <tr>
+                        <th>#</th>
+                        <th>Customer Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Guests</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr ng-repeat="b in bookings">
+                        <td>{{ $index + 1 }}</td>
+                        <td><b>{{ b.customerName }}</b></td>
+                        <td>{{ b.date }}</td>
+                        <td>{{ b.time }}</td>
+                        <td>{{ b.guests }}</td>
+                        <td><span class="badge-cat badge-ok">Confirmed</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <p ng-if="bookings.length === 0" style="color: #795548; font-style: italic;">
+                No reservations yet. Switch to tab 2 to create a booking!
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Kaboom's Kitchen - College Web Technologies Lab Project</p>
+            <p><a href="index.html#labs">All lab modules</a></p>
+        </div>
+    </footer>
+
+    <!-- ========================================================
+         Angular Application Logic (Module, Service & Controller)
+         ======================================================== -->
+    <script>
+        // 1. Define the main AngularJS application module
+        var app = angular.module("kaboomApp", []);
+
+        // 2. Week 13: Simple Booking Service (Service layer to manage reservations)
+        app.service("BookingService", function() {
+            var reservations = [
+                { customerName: "Rahul Sharma", date: "2026-10-15", time: "19:30", guests: 4 },
+                { customerName: "Ananya Iyer", date: "2026-10-16", time: "20:00", guests: 2 }
+            ];
+
+            this.getAll = function() {
+                return reservations;
+            };
+
+            this.add = function(booking) {
+                reservations.push(booking);
+            };
+        });
+
+        // 3. Week 12-14: Restaurant Controller
+        app.controller("RestaurantController", function($scope, BookingService) {
+            // View / Tab routing state
+            $scope.currentTab = 'menu';
+
+            $scope.setTab = function(tabName) {
+                $scope.currentTab = tabName;
+            };
+
+            // Week 12: Data model for menu items
+            $scope.menuItems = [
+                { name: "Fiery Kaboom Wings", category: "Starters", price: 8.99 },
+                { name: "Garlic Herb Bruschetta", category: "Starters", price: 6.49 },
+                { name: "Paneer Sizzler Platter", category: "Main Course", price: 13.99 },
+                { name: "Smoky BBQ Chicken Steak", category: "Main Course", price: 15.49 },
+                { name: "Volcano Choco Brownie", category: "Desserts", price: 5.99 },
+                { name: "Mango Citrus Cooler", category: "Desserts", price: 4.25 }
+            ];
+
+            // Week 13: Booking Form model initialized
+            $scope.formData = {
+                customerName: "",
+                date: "",
+                time: "",
+                guests: 2
+            };
+
+            // Fetch reservations from BookingService
+            $scope.bookings = BookingService.getAll();
+
+            // Quick reserve jump from menu
+            $scope.quickReserve = function(dishName) {
+                $scope.currentTab = 'book';
+            };
+
+            // Week 13: Handle Angular form submission
+            $scope.submitBooking = function(form) {
+                if (form.$valid) {
+                    var formattedDate = $scope.formData.date instanceof Date ?
+                        $scope.formData.date.toISOString().split('T')[0] : $scope.formData.date;
+                    var formattedTime = $scope.formData.time instanceof Date ?
+                        $scope.formData.time.toTimeString().split(' ')[0].substring(0, 5) : $scope.formData.time;
+
+                    // Add to service
+                    BookingService.add({
+                        customerName: $scope.formData.customerName,
+                        date: formattedDate,
+                        time: formattedTime,
+                        guests: $scope.formData.guests
+                    });
+
+                    alert("Success! Reservation confirmed for " + $scope.formData.customerName + ".");
+
+                    // Reset form and navigate to confirmed reservations tab (Week 14)
+                    $scope.resetForm();
+                    form.$setPristine();
+                    form.$setUntouched();
+                    $scope.currentTab = 'reservations';
+                }
+            };
+
+            // Reset form helper
+            $scope.resetForm = function() {
+                $scope.formData = {
+                    customerName: "",
+                    date: "",
+                    time: "",
+                    guests: 2
+                };
+            };
+        });
+    </script>
+</body>
+</html>

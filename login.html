@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaboom's Kitchen - Login</title>
+
+    <!-- 1. External CSS: Linked from shared style.css -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- 2. Internal CSS: Page-specific styling for login -->
+    <style>
+        /* Internal CSS demonstration */
+        .login-note {
+            background-color: #FFE0B2;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #5D4037;
+            margin: 0 0 20px;
+        }
+
+        .auth-card {
+            max-width: 440px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Header: brand + navigation (same on every page) -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">K</span>
+                <span>Kaboom's Kitchen<small>Flavors that burst with joy!</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu &amp; Booking</a></li>
+                    <li><a href="login.html" class="active-link">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li>
+                        <!-- Labs dropdown: <details> opens and closes without JavaScript -->
+                        <details class="nav-labs">
+                            <summary>Labs</summary>
+                            <ul>
+                                <li><a href="menu.xml"><span>W6</span>Menu XML + DTD</a></li>
+                                <li><a href="fetch_text.html"><span>W8</span>Fetch Text</a></li>
+                                <li><a href="fetch_data.html"><span>W9</span>Fetch JSON &amp; XML</a></li>
+                                <li><a href="booking_post.html"><span>W10</span>POST Booking</a></li>
+                                <li><a href="menu_ts_demo.html"><span>W11</span>TypeScript Demo</a></li>
+                                <li><a href="angular_app.html"><span>W12–14</span>Angular SPA</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="badge">Week 1 · Login page</span>
+            <h1>Customer Login</h1>
+            <p class="lead">Sign in to see the menu and manage your table reservations.</p>
+        </div>
+    </section>
+
+    <!-- Main Content Section: Login Form -->
+    <main class="container">
+        <div class="card form-card auth-card">
+            <p class="login-note">Enter your registered details to access menu &amp; reservations</p>
+
+            <form action="#" method="get">
+                <div class="field">
+                    <label for="username">Username / Email</label>
+                    <input type="text" id="username" name="username" placeholder="Enter username or email" required>
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter password" required>
+                </div>
+
+                <div class="form-actions">
+                    <input type="submit" value="Login" class="btn-submit">
+                    <input type="reset" value="Clear" class="btn-reset">
+                </div>
+            </form>
+
+            <!-- 3. Inline CSS demonstration: Direct styling on link and text -->
+            <p class="form-footer">
+                Don't have an account yet?
+                <a href="register.html" style="color: #D84315; font-weight: bold; text-decoration: underline;">Register here</a>
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Kaboom's Kitchen - College Web Technologies Lab Project</p>
+            <p><a href="index.html#labs">All lab modules</a></p>
+        </div>
+    </footer>
+</body>
+</html>

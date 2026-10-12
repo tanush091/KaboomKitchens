@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaboom's Kitchen - Week 8 Fetch Text Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-card {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Header: brand + navigation (same on every page) -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">K</span>
+                <span>Kaboom's Kitchen<small>Flavors that burst with joy!</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu &amp; Booking</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li>
+                        <!-- Labs dropdown: <details> opens and closes without JavaScript -->
+                        <details class="nav-labs">
+                            <summary class="active-link">Labs</summary>
+                            <ul>
+                                <li><a href="menu.xml"><span>W6</span>Menu XML + DTD</a></li>
+                                <li><a href="fetch_text.html" class="active-link"><span>W8</span>Fetch Text</a></li>
+                                <li><a href="fetch_data.html"><span>W9</span>Fetch JSON &amp; XML</a></li>
+                                <li><a href="booking_post.html"><span>W10</span>POST Booking</a></li>
+                                <li><a href="menu_ts_demo.html"><span>W11</span>TypeScript Demo</a></li>
+                                <li><a href="angular_app.html"><span>W12–14</span>Angular SPA</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="badge">Week 8 · Fetch API</span>
+            <h1>Loading Text Asynchronously</h1>
+            <p class="lead">Click the button to load <code>restaurant_info.txt</code> in the background, without reloading the page.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="card demo-card">
+            <div class="callout">
+                <b>Note for Lab Exam:</b> The Fetch API uses asynchronous HTTP requests (<code>Promises</code>). If tested via <code>file://</code> protocol, modern browsers enforce CORS restrictions. For the practical exam, run via Live Server or a local HTTP server.
+            </div>
+
+            <button onclick="loadRestaurantInfo()" class="btn-submit">
+                Load Restaurant Story (Fetch API)
+            </button>
+
+            <div id="outputDisplay" class="output-box">Text content will appear here when fetched...</div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Kaboom's Kitchen - College Web Technologies Lab Project</p>
+            <p><a href="index.html#labs">All lab modules</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // WEEK 8: Basic Fetch API demonstration for loading local text
+        function loadRestaurantInfo() {
+            var display = document.getElementById("outputDisplay");
+            display.innerText = "Fetching data asynchronously from restaurant_info.txt...";
+
+            // 1. Initiate asynchronous GET request
+            fetch("restaurant_info.txt")
+                .then(function(response) {
+                    // 2. Check if the HTTP response status is OK (200)
+                    if (!response.ok) {
+                        throw new Error("HTTP error! Status: " + response.status);
+                    }
+                    // 3. Parse the body as plain text
+                    return response.text();
+                })
+                .then(function(data) {
+                    // 4. Update the DOM with the received text
+                    display.innerText = data;
+                })
+                .catch(function(error) {
+                    // 5. Handle any errors during fetch
+                    display.innerHTML = "<span style='color: #C62828;'><b>Error loading file:</b> " + error.message +
+                                        "<br><br><i>Tip: Open with Live Server (http://localhost:...) to allow local fetch requests.</i></span>";
+                });
+        }
+    </script>
+</body>
+</html>

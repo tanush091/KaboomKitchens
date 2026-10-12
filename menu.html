@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaboom's Kitchen - Menu & Table Booking</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .content-box tr td.category-header {
+            background-color: #FFE0B2;
+            color: #BF360C;
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .price-tag {
+            color: #BF360C;
+            font-weight: bold;
+            font-size: 15px;
+            white-space: nowrap;
+        }
+        .book-section {
+            max-width: 640px;
+            margin: 0 auto;
+            /* keeps the form clear of the sticky header after scrollIntoView() */
+            scroll-margin-top: 90px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Header: brand + navigation (same on every page) -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">K</span>
+                <span>Kaboom's Kitchen<small>Flavors that burst with joy!</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html" class="active-link">Menu &amp; Booking</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li>
+                        <!-- Labs dropdown: <details> opens and closes without JavaScript -->
+                        <details class="nav-labs">
+                            <summary>Labs</summary>
+                            <ul>
+                                <li><a href="menu.xml"><span>W6</span>Menu XML + DTD</a></li>
+                                <li><a href="fetch_text.html"><span>W8</span>Fetch Text</a></li>
+                                <li><a href="fetch_data.html"><span>W9</span>Fetch JSON &amp; XML</a></li>
+                                <li><a href="booking_post.html"><span>W10</span>POST Booking</a></li>
+                                <li><a href="menu_ts_demo.html"><span>W11</span>TypeScript Demo</a></li>
+                                <li><a href="angular_app.html"><span>W12–14</span>Angular SPA</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="badge">Week 5 · Catalogue</span>
+            <h1>Our Delicious Menu</h1>
+            <p class="lead">Explore our handcrafted delicacies, then reserve your table below to dine with us.</p>
+            <p style="margin: 20px 0 0;">
+                <button onclick="scrollToBooking()" class="btn-submit">Reserve a Table Now &darr;</button>
+            </p>
+        </div>
+    </section>
+
+    <main class="container">
+        <!-- Menu Table -->
+        <section class="section">
+            <div class="table-wrap">
+                <table class="content-box">
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                    </tr>
+
+                    <!-- Starters -->
+                    <tr>
+                        <td colspan="3" class="category-header">Starters &amp; Appetizers</td>
+                    </tr>
+                    <tr>
+                        <td><b>Fiery Kaboom Wings</b></td>
+                        <td>Crispy wings glazed in signature sweet &amp; spicy pepper sauce.</td>
+                        <td class="price-tag">$8.99</td>
+                    </tr>
+                    <tr>
+                        <td><b>Garlic Herb Bruschetta</b></td>
+                        <td>Toasted baguette slices topped with tomatoes, basil, and garlic olive oil.</td>
+                        <td class="price-tag">$6.49</td>
+                    </tr>
+
+                    <!-- Main Course -->
+                    <tr>
+                        <td colspan="3" class="category-header">Main Course</td>
+                    </tr>
+                    <tr>
+                        <td><b>Paneer Sizzler Platter</b></td>
+                        <td>Grilled cottage cheese with aromatic rice, sautéed veggies, and smoky sauce.</td>
+                        <td class="price-tag">$13.99</td>
+                    </tr>
+                    <tr>
+                        <td><b>Smoky BBQ Chicken Steak</b></td>
+                        <td>Tender chicken breast with herb mashed potatoes and pepper gravy.</td>
+                        <td class="price-tag">$15.49</td>
+                    </tr>
+
+                    <!-- Desserts -->
+                    <tr>
+                        <td colspan="3" class="category-header">Desserts &amp; Beverages</td>
+                    </tr>
+                    <tr>
+                        <td><b>Volcano Choco Brownie</b></td>
+                        <td>Warm molten brownie served with a scoop of vanilla ice cream.</td>
+                        <td class="price-tag">$5.99</td>
+                    </tr>
+                    <tr>
+                        <td><b>Mango Citrus Cooler</b></td>
+                        <td>Chilled mocktail made with fresh mango pulp, mint leaves, and lime juice.</td>
+                        <td class="price-tag">$4.25</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- WEEK 5: Table Booking Form Section -->
+        <section id="bookingSection" class="card book-section">
+            <h2>Book a Table</h2>
+            <p>Fill out the details below to reserve your dining experience.</p>
+
+            <form id="bookingForm" onsubmit="return handleBooking(event)">
+                <!-- Customer Name -->
+                <div class="field">
+                    <label for="custName">Customer Name</label>
+                    <input type="text" id="custName" name="custName" placeholder="Your name" required>
+                </div>
+
+                <!-- Booking Date + Time -->
+                <div class="field-row">
+                    <div class="field">
+                        <label for="bookDate">Booking Date</label>
+                        <input type="date" id="bookDate" name="bookDate" required>
+                    </div>
+                    <div class="field">
+                        <label for="bookTime">Booking Time</label>
+                        <input type="time" id="bookTime" name="bookTime" required>
+                    </div>
+                </div>
+
+                <!-- Number of Guests -->
+                <div class="field">
+                    <label for="guestCount">Number of Guests</label>
+                    <input type="number" id="guestCount" name="guestCount" min="1" max="20" placeholder="e.g. 4" required>
+                </div>
+
+                <!-- Submit / Reset -->
+                <div class="form-actions">
+                    <input type="submit" value="Confirm Booking" class="btn-submit">
+                    <input type="reset" value="Reset" class="btn-reset">
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Kaboom's Kitchen - College Web Technologies Lab Project</p>
+            <p><a href="index.html#labs">All lab modules</a></p>
+        </div>
+    </footer>
+
+    <!-- Basic JavaScript for Week 5 -->
+    <script>
+        // Smooth scroll to booking section
+        function scrollToBooking() {
+            var section = document.getElementById("bookingSection");
+            section.scrollIntoView({ behavior: "smooth" });
+            document.getElementById("custName").focus();
+        }
+
+        // Handle table reservation submission
+        function handleBooking(e) {
+            e.preventDefault(); // Prevent standard page reload for lab demo
+
+            var name = document.getElementById("custName").value.trim();
+            var date = document.getElementById("bookDate").value;
+            var time = document.getElementById("bookTime").value;
+            var guests = document.getElementById("guestCount").value;
+
+            if (name === "" || date === "" || time === "" || guests === "") {
+                alert("Please fill in all booking fields!");
+                return false;
+            }
+
+            alert("Table Reserved Successfully!\n" +
+                  "Name: " + name + "\n" +
+                  "Date: " + date + "\n" +
+                  "Time: " + time + "\n" +
+                  "Guests: " + guests + "\n\n" +
+                  "We look forward to serving you at Kaboom's Kitchen!");
+
+            document.getElementById("bookingForm").reset();
+            return true;
+        }
+    </script>
+</body>
+</html>

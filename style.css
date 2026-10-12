@@ -1,0 +1,512 @@
+/* ========================================================
+   Kaboom's Kitchen - Shared External Stylesheet (style.css)
+   Week 3: External CSS Demonstration (linked by every page)
+   Theme: Cream (#FFF8DC), Orange (#D84315), Dark Brown (#3E2723)
+   ======================================================== */
+
+/* 1. Design tokens: colours and sizes reused across the site */
+:root {
+    --cream: #FFF8DC;
+    --tint: #FFF3E0;
+    --peach: #FFE0B2;
+    --orange: #D84315;
+    --orange-dark: #BF360C;
+    --brown: #3E2723;
+    --brown-soft: #5D4037;
+    --muted: #795548;
+    --line: #F0D9CC;
+    --white: #FFFFFF;
+    --success: #2E7D32;
+    --danger: #C62828;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(62, 39, 35, 0.08);
+    --max-width: 1100px;
+}
+
+/* Include padding and border in every element's width */
+* {
+    box-sizing: border-box;
+}
+
+/* Body: font, cream background, and a column layout that pins the footer to the bottom */
+body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #FFF8DC;
+    color: var(--brown);
+    margin: 0;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Centred content column used by header, hero, main and footer */
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3 {
+    line-height: 1.25;
+    color: var(--brown);
+}
+
+a {
+    color: var(--orange);
+}
+
+code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+    background-color: var(--tint);
+    color: var(--orange-dark);
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+/* ---------------- Site header + navigation ---------------- */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--brown);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.site-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* Brand: round "K" logo + name + tagline */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.brand small {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--peach);
+}
+
+.brand-mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--orange);
+    color: var(--white);
+    font-size: 18px;
+}
+
+/* Navigation list laid out in a row */
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+}
+
+nav a,
+.nav-labs summary {
+    display: block;
+    color: var(--cream);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+/* Pseudo-class: hover state */
+nav a:hover,
+.nav-labs summary:hover {
+    background-color: var(--orange);
+    color: var(--white);
+}
+
+/* Highlights the page you are on */
+nav a.active-link,
+.nav-labs summary.active-link {
+    background-color: var(--orange);
+    color: var(--white);
+}
+
+/* "Labs" dropdown built with <details>/<summary> - no JavaScript needed */
+.nav-labs {
+    position: relative;
+}
+
+.nav-labs summary {
+    list-style: none;
+}
+
+.nav-labs summary::-webkit-details-marker {
+    display: none;
+}
+
+.nav-labs summary::after {
+    content: " \25BE";
+}
+
+.nav-labs ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    display: block;
+    min-width: 250px;
+    padding: 8px;
+    background-color: var(--white);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(62, 39, 35, 0.2);
+}
+
+.nav-labs ul a {
+    color: var(--brown);
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.nav-labs ul a:hover,
+.nav-labs ul a.active-link {
+    background-color: var(--tint);
+    color: var(--orange);
+}
+
+.nav-labs ul a span {
+    display: inline-block;
+    min-width: 54px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--orange);
+}
+
+/* ---------------- Page hero (title band under the header) ---------------- */
+.page-hero {
+    background-color: var(--tint);
+    border-bottom: 1px solid var(--line);
+    padding: 40px 0 32px;
+}
+
+.page-hero h1 {
+    margin: 10px 0 8px;
+    font-size: clamp(28px, 4vw, 40px);
+}
+
+.page-hero .lead {
+    margin: 0;
+    max-width: 720px;
+    font-size: 18px;
+    color: var(--brown-soft);
+}
+
+/* Small pill label, e.g. "Week 5 · Catalogue" */
+.badge {
+    display: inline-block;
+    background-color: var(--orange);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 999px;
+}
+
+/* ---------------- Main content ---------------- */
+main {
+    flex: 1;
+    padding-top: 32px;
+    padding-bottom: 48px;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.section > h2 {
+    margin: 0 0 6px;
+    font-size: 26px;
+}
+
+.section-intro {
+    margin: 0 0 18px;
+    color: var(--muted);
+}
+
+/* White card used for panels and forms */
+.card {
+    background-color: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.card > h2,
+.card > h3 {
+    margin-top: 0;
+}
+
+/* Responsive grid: as many 240px+ columns as fit */
+.grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* Cards inside a grid use the grid gap instead of their own margin */
+.grid > .card {
+    margin-bottom: 0;
+}
+
+/* Tinted information box */
+.callout {
+    background-color: var(--tint);
+    border: 1px solid var(--peach);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 0 0 20px;
+    font-size: 15px;
+}
+
+/* ---------------- Tables ---------------- */
+.table-wrap {
+    overflow-x: auto;
+    background-color: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.content-box {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--white);
+}
+
+.content-box th {
+    background-color: var(--orange);
+    color: var(--white);
+    text-align: left;
+    font-weight: 600;
+    padding: 12px 16px;
+}
+
+.content-box td {
+    padding: 12px 16px;
+    border-top: 1px solid var(--line);
+    vertical-align: top;
+}
+
+.content-box tr:nth-child(even) td {
+    background-color: #FFFBF5;
+}
+
+/* ---------------- Forms ---------------- */
+.form-card {
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+/* One label + input pair */
+.field {
+    margin-bottom: 18px;
+}
+
+.field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+/* Two fields side by side (stacks on small screens) */
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Attribute selectors: style only these input types */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    color: var(--brown);
+    background-color: var(--white);
+    border: 1.5px solid #E0C3B4;
+    border-radius: 8px;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(216, 67, 21, 0.18);
+}
+
+/* Red border once the user has typed something the HTML5 rules reject */
+input:user-invalid {
+    border-color: var(--danger);
+    background-color: #FFF5F5;
+}
+
+.helper-text {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.form-footer {
+    margin: 20px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+}
+
+/* ---------------- Buttons ---------------- */
+.btn-submit,
+.btn-reset {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-submit {
+    background-color: var(--orange);
+    color: var(--white);
+}
+
+.btn-submit:hover {
+    background-color: var(--orange-dark);
+}
+
+.btn-reset {
+    background-color: transparent;
+    color: var(--brown);
+    border-color: var(--brown);
+}
+
+.btn-reset:hover {
+    background-color: var(--brown);
+    color: var(--white);
+}
+
+.btn-submit:disabled,
+.btn-submit[disabled] {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* ---------------- Output panels (Fetch / TypeScript demos) ---------------- */
+.output-box {
+    margin-top: 16px;
+    min-height: 90px;
+    padding: 16px;
+    background-color: #FFFDF8;
+    border: 1.5px dashed var(--orange);
+    border-radius: var(--radius);
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 14px;
+    white-space: pre-line;
+}
+
+/* ---------------- Footer ---------------- */
+.site-footer {
+    background-color: var(--brown);
+    color: var(--peach);
+    font-size: 14px;
+    padding: 20px 0;
+}
+
+.site-footer .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+.site-footer a {
+    color: var(--cream);
+}
+
+/* ---------------- Small screens ---------------- */
+@media (max-width: 720px) {
+    .site-header {
+        position: static;
+    }
+
+    nav a,
+    .nav-labs summary {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .nav-labs ul {
+        right: auto;
+        left: 0;
+    }
+
+    .page-hero {
+        padding: 28px 0 24px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .field-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}

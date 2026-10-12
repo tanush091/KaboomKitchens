@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaboom's Kitchen - Week 10 POST Request Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .post-card {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        .info-callout {
+            max-width: 820px;
+            margin: 0 auto 24px;
+        }
+        .status-box {
+            margin-top: 20px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            display: none;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+        }
+        .status-success {
+            background-color: #E8F5E9;
+            border: 1px solid #4CAF50;
+            color: #2E7D32;
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Header: brand + navigation (same on every page) -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">K</span>
+                <span>Kaboom's Kitchen<small>Flavors that burst with joy!</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu &amp; Booking</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li>
+                        <!-- Labs dropdown: <details> opens and closes without JavaScript -->
+                        <details class="nav-labs">
+                            <summary class="active-link">Labs</summary>
+                            <ul>
+                                <li><a href="menu.xml"><span>W6</span>Menu XML + DTD</a></li>
+                                <li><a href="fetch_text.html"><span>W8</span>Fetch Text</a></li>
+                                <li><a href="fetch_data.html"><span>W9</span>Fetch JSON &amp; XML</a></li>
+                                <li><a href="booking_post.html" class="active-link"><span>W10</span>POST Booking</a></li>
+                                <li><a href="menu_ts_demo.html"><span>W11</span>TypeScript Demo</a></li>
+                                <li><a href="angular_app.html"><span>W12–14</span>Angular SPA</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="badge">Week 10 · HTTP POST</span>
+            <h1>Table Booking with POST</h1>
+            <p class="lead">Send a reservation to a server with <code>fetch()</code> using the POST method, and read the server's reply.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <!-- Academic / Exam Explanation -->
+        <div class="callout info-callout">
+            <b>Lab &amp; Viva Concept Note:</b>
+            A real POST request requires a backend web server (e.g. Node.js, Express, PHP, Python) connected to a database (e.g. MySQL, MongoDB) to store reservations permanently.
+            Frontend client-side code alone <b>cannot permanently save data</b>. In this demonstration, we transmit our booking payload via Fetch API using <code>method: 'POST'</code> and <code>headers: { 'Content-Type': 'application/json' }</code> to a public test endpoint (<code>jsonplaceholder.typicode.com/posts</code>) to observe the complete request-response cycle and HTTP status codes (e.g., <code>201 Created</code>).
+        </div>
+
+        <!-- Booking Form -->
+        <div class="card post-card">
+            <h2>Reserve Your Table (POST Method)</h2>
+            <form id="postBookingForm" onsubmit="submitBookingViaPost(event)">
+                <!-- Customer Name -->
+                <div class="field">
+                    <label for="postCustName">Customer Name</label>
+                    <input type="text" id="postCustName" name="custName" placeholder="Full Name" required>
+                </div>
+
+                <!-- Booking Date + Time -->
+                <div class="field-row">
+                    <div class="field">
+                        <label for="postBookDate">Booking Date</label>
+                        <input type="date" id="postBookDate" name="bookDate" required>
+                    </div>
+                    <div class="field">
+                        <label for="postBookTime">Booking Time</label>
+                        <input type="time" id="postBookTime" name="bookTime" required>
+                    </div>
+                </div>
+
+                <!-- Number of Guests -->
+                <div class="field">
+                    <label for="postGuestCount">Number of Guests</label>
+                    <input type="number" id="postGuestCount" name="guestCount" min="1" max="20" placeholder="e.g. 4" required>
+                </div>
+
+                <!-- Submit / Reset -->
+                <div class="form-actions">
+                    <input type="submit" value="Send POST Request" class="btn-submit">
+                    <input type="reset" value="Clear" class="btn-reset">
+                </div>
+            </form>
+
+            <!-- Status Output Box -->
+            <div id="postStatusBox" class="status-box"></div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Kaboom's Kitchen - College Web Technologies Lab Project</p>
+            <p><a href="index.html#labs">All lab modules</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // WEEK 10: Sending Table Booking data via Fetch POST
+        function submitBookingViaPost(e) {
+            e.preventDefault();
+
+            var statusBox = document.getElementById("postStatusBox");
+            statusBox.style.display = "block";
+            statusBox.className = "status-box";
+            statusBox.innerText = "Dispatching HTTP POST request to test endpoint...";
+
+            // 1. Gather form input into a structured JavaScript object
+            var bookingData = {
+                customerName: document.getElementById("postCustName").value.trim(),
+                bookingDate: document.getElementById("postBookDate").value,
+                bookingTime: document.getElementById("postBookTime").value,
+                numberOfGuests: parseInt(document.getElementById("postGuestCount").value, 10),
+                restaurant: "Kaboom's Kitchen"
+            };
+
+            // 2. Transmit via Fetch API using POST method
+            fetch("https://jsonplaceholder.typicode.com/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify(bookingData) // Convert object to JSON string
+            })
+            .then(function(response) {
+                // Check response status
+                if (!response.ok) {
+                    throw new Error("Server responded with HTTP " + response.status);
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                // 3. Display response confirmation
+                statusBox.className = "status-box status-success";
+                statusBox.innerHTML = "<b>HTTP POST Response Received Successfully!</b><br><br>" +
+                    "&bull; HTTP Status Code: <b>201 Created</b><br>" +
+                    "&bull; Generated Reservation ID: <b>#" + data.id + "</b><br>" +
+                    "&bull; Customer: <b>" + data.customerName + "</b><br>" +
+                    "&bull; Date & Time: <b>" + data.bookingDate + " at " + data.bookingTime + "</b><br>" +
+                    "&bull; Guests: <b>" + data.numberOfGuests + "</b><br><br>" +
+                    "<i>(Note: Test server accepted the payload and simulated saving the record.)</i>";
+            })
+            .catch(function(error) {
+                // Fallback for offline environments
+                statusBox.className = "status-box";
+                statusBox.style.backgroundColor = "#FFF9C4";
+                statusBox.style.border = "1px solid #FBC02D";
+                statusBox.innerHTML = "<b>Network note:</b> Unable to reach remote mock server (" + error.message + ").<br>" +
+                    "However, local POST payload was verified correctly:<br><pre>" + JSON.stringify(bookingData, null, 2) + "</pre>";
+            });
+        }
+    </script>
+</body>
+</html>

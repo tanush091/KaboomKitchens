@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaboom's Kitchen - Week 11 TypeScript Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .ts-box {
+            margin-bottom: 0;
+        }
+        pre {
+            background-color: #2D2D2D;
+            color: #F8F8F2;
+            padding: 16px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 13px;
+            margin: 0;
+        }
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        #tsOutput p {
+            margin: 0 0 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Header: brand + navigation (same on every page) -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">K</span>
+                <span>Kaboom's Kitchen<small>Flavors that burst with joy!</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu &amp; Booking</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li>
+                        <!-- Labs dropdown: <details> opens and closes without JavaScript -->
+                        <details class="nav-labs">
+                            <summary class="active-link">Labs</summary>
+                            <ul>
+                                <li><a href="menu.xml"><span>W6</span>Menu XML + DTD</a></li>
+                                <li><a href="fetch_text.html"><span>W8</span>Fetch Text</a></li>
+                                <li><a href="fetch_data.html"><span>W9</span>Fetch JSON &amp; XML</a></li>
+                                <li><a href="booking_post.html"><span>W10</span>POST Booking</a></li>
+                                <li><a href="menu_ts_demo.html" class="active-link"><span>W11</span>TypeScript Demo</a></li>
+                                <li><a href="angular_app.html"><span>W12–14</span>Angular SPA</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="badge">Week 11 · TypeScript</span>
+            <h1>Classes, Interfaces &amp; Functions</h1>
+            <p class="lead">View the TypeScript source from <code>menu.ts</code> and run the compiled class methods live.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="grid">
+            <div class="card ts-box">
+                <h2>1. TypeScript Source <small>(menu.ts)</small></h2>
+                <pre><code>// Interface definition
+interface MenuItem {
+    id: number;
+    name: string;
+    category: string;
+    price: number;
+    isSpicy: boolean;
+}
+
+// Class with private properties and typed methods
+class RestaurantMenu {
+    private items: MenuItem[];
+    constructor() { /* ... */ }
+    public getAllItems(): MenuItem[] { return this.items; }
+    public calculateTotal(selectedIds: number[]): number { /* ... */ }
+}</code></pre>
+            </div>
+
+            <div class="card ts-box">
+                <h2>2. Run the Compiled Class</h2>
+                <p>Click below to invoke methods from the transpiled <code>RestaurantMenu</code> class instance (<code>menu.js</code>):</p>
+                <button onclick="runTsDemo()" class="btn-submit">Execute TypeScript Class Methods</button>
+                <div id="tsOutput" class="output-box" style="white-space: normal;">Output will appear here...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Kaboom's Kitchen - College Web Technologies Lab Project</p>
+            <p><a href="index.html#labs">All lab modules</a></p>
+        </div>
+    </footer>
+
+    <!-- Load compiled script -->
+    <script src="menu.js"></script>
+    <script>
+        function runTsDemo() {
+            var menu = new RestaurantMenu();
+            var allItems = menu.getAllItems();
+            var starters = menu.filterByCategory("Starters");
+            var sampleBill = menu.calculateTotal([1, 3]);
+
+            var outputHtml = "<p><b>Total Items Loaded:</b> " + allItems.length + "</p>" +
+                             "<p><b>Starters Filtered:</b> " + starters.map(function(i){ return i.name; }).join(", ") + "</p>" +
+                             "<p><b>Bill for Item #1 (Wings) & #3 (Sizzler):</b> " + formatCurrency(sampleBill) + "</p>";
+
+            document.getElementById("tsOutput").innerHTML = outputHtml;
+        }
+    </script>
+</body>
+</html>
